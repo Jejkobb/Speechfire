@@ -1,0 +1,78 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+eggs/
+egg-info/
+*.egg
+*.egg-info/
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+venv.bak/
+venv3/
+*.env
+whisper-env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Flask instance folder
+instance/
+
+# Pytest
+.cache/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# VS Code settings
+.vscode/
+
+# MacOS Finder
+.DS_Store
+
+# Windows thumbnail cache
+Thumbs.db
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.mst
+
+# IDE/Editor folders
+.idea/
+*.suo
+*.ntvs_analysis.dat
+*.ncb
+*.sw?
+*.swo
+*.log
+
+# Local environment files
+*.local
+
+# Environment variables
+.env
