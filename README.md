@@ -12,3 +12,8 @@
 `pip install torch torchvision torchaudio`
 
 `pip install openai-whisper`
+
+`pip install -r requirements.txt`
+
+# Install Addon in FireFox
+Need a FireFox sign to be able to install it normally, so as of now you have to use "Temporary Extensions"

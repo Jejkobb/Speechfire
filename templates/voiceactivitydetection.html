@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Transcription with VAD</title>
+</head>
+<body>
+    <h1>Live Transcription with VAD</h1>
+    <button id="start-btn">Start Transcribing</button>
+    <button id="stop-btn">Stop Transcribing</button>
+    <p id="transcription"></p>
+
+    <!-- Include the VAD and ONNX runtime scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.14.0/dist/ort.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.7/dist/bundle.min.js"></script>
+
+    <script>
+        const startButton = document.getElementById("start-btn");
+        const stopButton = document.getElementById("stop-btn");
+        const transcriptionElement = document.getElementById("transcription");
+
+        let audioChunks = [];
+        let mediaRecorder;
+        let isTranscribing = false;
+        let vadInstance;
+
+        // Function to send audio chunks to the server for transcription
+        function sendAudioForTranscription(audioBlob) {
+            const formData = new FormData();
+            formData.append('audio_data', audioBlob);
+
+            fetch('http://127.0.0.1:5000/transcribe', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.transcription) {
+                    transcriptionElement.textContent += data.transcription;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to start the VAD and microphone recording
+        async function startVAD() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+
+            vadInstance = await vad.MicVAD.new({
+                onSpeechStart: () => {
+                    console.log("Speech start detected");
+                    if (!isTranscribing) {
+                        mediaRecorder.start();
+                        isTranscribing = true;
+                    }
+                },
+                onSpeechEnd: (audio) => {
+                    console.log("Speech end detected");
+
+                    if (isTranscribing) {
+                        mediaRecorder.stop();
+                        isTranscribing = false;
+                    }
+                }
+            });
+
+            vadInstance.start();
+
+            mediaRecorder.ondataavailable = (event) => {
+                audioChunks.push(event.data);
+
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                audioChunks = [];
+
+                // Send the audio blob to the server for transcription after speech ends
+                sendAudioForTranscription(audioBlob);
+            };
+        }
+
+        startButton.addEventListener("click", () => {
+            startVAD();
+            transcriptionElement.textContent = "";
+        });
+
+        stopButton.addEventListener("click", () => {
+            if (vadInstance) {
+                vadInstance.pause();
+            }
+            if (mediaRecorder) {
+                mediaRecorder.stop();
+            }
+        });
+    </script>
+</body>
+</html>
