@@ -44,6 +44,7 @@ plotly==5.24.0
 pydantic==2.9.1
 pydantic_core==2.23.3
 pyparsing==3.1.4
+pystray==0.19.5
 python-dateutil==2.9.0.post0
 python-engineio==4.9.1
 python-socketio==5.11.4

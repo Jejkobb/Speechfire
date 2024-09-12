@@ -41,10 +41,18 @@ Open extension.xpi in Firefox and it will install the extension for you.
 
 ## Usage 📝
 
-### 1. Start the server
+### 1. Start the server (don't forget to activate the environment first)
+
+#### Directly
 
 ```bash
-run_server.bat
+python app.py
+```
+
+#### By creating a system tray icon
+
+```bash
+python tray_app.py
 ```
 
 ### 2. Record audio
@@ -52,3 +60,15 @@ run_server.bat
 - Press `ctrl+alt+s` to start recording.
 - Press `ctrl+alt+s` to stop recording.
 - The transcription will be displayed in the focused text field.
+
+### 3. Stop the server when you're done
+
+#### Directly
+
+```bash
+ctrl+c
+```
+
+#### By stopping the system tray icon
+
+Right click the system tray icon and select "Stop Server".
