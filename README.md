@@ -54,6 +54,7 @@ python app.py
 ```bash
 python tray_app.py
 ```
+Locate the tray icon in your system tray, right click it and select "Start Server"
 
 ### 2. Record audio
 
