@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Whisper Live Transcription",
-    "version": "1.0",
+    "version": "1.1",
     "description": "Transcribe your speech and paste the result into the focused text field.",
     "permissions": [
         "activeTab",
