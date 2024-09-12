@@ -13,7 +13,7 @@ CORS(app)
 
 # Load Whisper model (on GPU if available)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = whisper.load_model("base", device=device)
+model = whisper.load_model("base.en", device=device)
 
 @app.route('/')
 def home():
