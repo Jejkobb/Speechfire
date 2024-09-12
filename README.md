@@ -1,20 +1,54 @@
-# Create a virtual environment
-`python -m venv whisper-env`
+# 🎙️ Speech-to-Fire 🔥
 
-# Activate the virtual environment
-# For Windows:
-`whisper-env\Scripts\activate`
+**An offline speech-to-text extension for Firefox**
 
-# For macOS/Linux:
-`source whisper-env/bin/activate`
+## Installation 💻
 
-# Install stuff
-`pip install torch torchvision torchaudio`
+### 1. Create a virtual environment:
+```bash
+# venv
+python -m venv whisper-env
 
-`pip install openai-whisper`
+# or conda
+conda create -n whisper-env
+```
 
-`pip install -r requirements.txt`
+### 2. Activate the virtual environment:
 
-# Install Addon in FireFox
+```bash
+# venv
+## Windows:
+whisper-env\Scripts\activate
 
-Open extension.xpi in FireFox and it will install the extension for you.
+## macOS/Linux:
+source whisper-env/bin/activate
+
+# or conda
+conda activate whisper-env
+```
+
+### 3. Install python packages
+
+```bash
+pip install -r requirements.txt
+# or for specific versions that are known to work:
+pip install -r requirements-lock.txt
+```
+
+### 4. Install Extension in Firefox
+
+Open extension.xpi in Firefox and it will install the extension for you.
+
+## Usage 📝
+
+### 1. Start the server
+
+```bash
+run_server.bat
+```
+
+### 2. Record audio
+
+- Press `ctrl+alt+s` to start recording.
+- Press `ctrl+alt+s` to stop recording.
+- The transcription will be displayed in the focused text field.
