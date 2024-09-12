@@ -57,6 +57,7 @@ python tray_app.py
 
 ### 2. Record audio
 
+- Place your cursor on a text field in Firefox.
 - Press `ctrl+alt+s` to start recording.
 - Press `ctrl+alt+s` to stop recording.
 - The transcription will be displayed in the focused text field.
