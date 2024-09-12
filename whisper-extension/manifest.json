@@ -27,6 +27,10 @@
             "description": "Start/Stop transcription"
         }
     },
+    "web_accessible_resources": [
+    "sounds/start.mp3",
+    "sounds/stop.mp3"
+    ],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
