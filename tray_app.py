@@ -24,8 +24,10 @@ def start_server():
     global flask_process
     if flask_process is None:
         logging.info("Starting Flask server")
-        # Run the Flask server using Python
-        flask_process = subprocess.Popen(['python', 'app.py'], creationflags=subprocess.CREATE_NO_WINDOW)
+        # Get the path to the Python interpreter in the virtual environment
+        venv_python = sys.executable
+        # Run the Flask server using the virtual environment's Python
+        flask_process = subprocess.Popen([venv_python, 'app.py'], creationflags=subprocess.CREATE_NO_WINDOW)
 
 def stop_server():
     global flask_process
