@@ -44,21 +44,27 @@ function startRecording() {
 }
 
 function sendAudioForTranscription(audioBlob) {
-    const formData = new FormData();
-    formData.append('audio_data', audioBlob, 'audio.wav');
+    // Request the selected language from background.js
+    chrome.runtime.sendMessage({ action: "getLanguage" }, (response) => {
+        const selectedLanguage = response.language || 'English'; // Default to English if no language is received
 
-    fetch('http://127.0.0.1:5000/transcribe', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Transcription received:", data.transcription); // Log transcription for debugging
-        if (data.transcription) {
-            pasteTranscription(data.transcription);
-        }
-    })
-    .catch(error => console.error('Error:', error));
+        const formData = new FormData();
+        formData.append('audio_data', audioBlob, 'audio.wav');
+
+        // Send the language as a query string parameter
+        fetch(`http://127.0.0.1:5000/transcribe?lang=${encodeURIComponent(selectedLanguage)}`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Transcription received:", data.transcription); // Log transcription for debugging
+            if (data.transcription) {
+                pasteTranscription(data.transcription);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
 }
 
 function simulatePaste(text) {
