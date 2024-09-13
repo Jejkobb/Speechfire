@@ -5,6 +5,7 @@
 ## Installation 💻
 
 ### 1. Create a virtual environment:
+
 ```bash
 # venv
 python -m venv whisper-env
@@ -51,10 +52,17 @@ python app.py
 
 #### By creating a system tray icon
 
+This has only been tested on Windows and Pop_OS! (Ubuntu), but should work on any Linux system that supports the `appindicator3` library. You also need to install the following dependencies:
+
+- **Linux:** `sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1`
+
 ```bash
-python tray_app.py
+python system-tray/start_tray_linux.py
+# or
+python system-tray/start_tray_windows.py
 ```
-Locate the tray icon in your system tray, right click it and select "Start Server"
+
+Locate the tray icon in your system tray, right click it and select "Start Server".
 
 ### 2. Record audio
 
@@ -73,4 +81,4 @@ ctrl+c
 
 #### By stopping the system tray icon
 
-Right click the system tray icon and select "Stop Server".
+Right click the system tray icon and select "Stop Server". To stop the process, right click the icon and select "Exit".

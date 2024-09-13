@@ -72,3 +72,4 @@ urllib3
 Werkzeug 
 wheel 
 wsproto 
+psutil
