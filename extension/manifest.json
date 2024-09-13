@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Whisper Live Transcription",
-    "version": "1.1",
+    "name": "Speechfire",
+    "version": "1.2",
     "description": "Transcribe your speech and paste the result into the focused text field.",
     "permissions": [
         "activeTab",
@@ -27,9 +27,19 @@
             "description": "Start/Stop transcription"
         }
     },
+    "content_security_policy": "script-src 'self'; object-src 'self';",
     "web_accessible_resources": [
-    "sounds/start.mp3",
-    "sounds/stop.mp3"
+        "sounds/start.mp3",
+        "sounds/stop.mp3",
+        "font/Geist-Black.otf",
+        "font/Geist-Bold.otf",
+        "font/Geist-Light.otf",
+        "font/Geist-Medium.otf",
+        "font/Geist-Regular.otf",
+        "font/Geist-SemiBold.otf",
+        "font/Geist-Thin.otf",
+        "font/Geist-UltraBlack.otf",
+        "font/Geist-UltraLight.otf"
     ],
     "content_scripts": [
         {

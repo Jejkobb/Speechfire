@@ -13,7 +13,7 @@ CORS(app)
 
 # Load Whisper model (on GPU if available)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = whisper.load_model("base.en", device=device)
+model = whisper.load_model("base", device=device)
 
 @app.route('/')
 def home():
@@ -21,6 +21,9 @@ def home():
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
+    # Get the language from the query string, default to 'English' if not provided
+    language = request.args.get('lang', 'English')
+    
     if 'audio_data' not in request.files:
         return jsonify({"error": "No audio data found!"}), 400
 
@@ -31,8 +34,8 @@ def transcribe():
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_audio_file:
             audio_file.save(temp_audio_file.name)
 
-        # Transcribe the temporary audio file using Whisper
-        result = model.transcribe(temp_audio_file.name, fp16=False, language="English")
+        # Transcribe the temporary audio file using Whisper with the selected language
+        result = model.transcribe(temp_audio_file.name, fp16=False, language=language)
 
         transcription = result["text"]
 
@@ -42,6 +45,7 @@ def transcribe():
             os.remove(temp_audio_file.name)
 
     return jsonify({"transcription": transcription})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

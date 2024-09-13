@@ -47,14 +47,14 @@ def on_clicked(icon, item):
         icon.stop()
 
 try:
-    image = Image.open("./whisper-extension/icon.png")
+    image = Image.open("./extension/icon.png")
     menu = pystray.Menu(
         pystray.MenuItem("Start Server", on_clicked),
         pystray.MenuItem("Stop Server", on_clicked),
         pystray.MenuItem("Exit", on_clicked)
     )
 
-    icon = pystray.Icon("name", image, "Speech-to-Fire", menu)
+    icon = pystray.Icon("name", image, "Speechfire", menu)
     logging.info("Starting icon")
     icon.run()
 except Exception as e:

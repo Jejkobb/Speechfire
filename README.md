@@ -1,4 +1,4 @@
-# 🎙️ Speech-to-Fire 🔥
+# 🎙️ Speechfire 🔥
 
 **An offline speech-to-text extension for Firefox**
 
