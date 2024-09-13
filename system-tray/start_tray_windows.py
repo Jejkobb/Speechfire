@@ -41,12 +41,12 @@ def update_icon_and_menu(icon):
         pystray.MenuItem("Exit", on_clicked)
     )
     icon_name = "icon-green.png" if is_running else "icon.png"
-    icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'whisper-extension', icon_name)
+    icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'extension/icon', icon_name)
     icon.icon = Image.open(icon_path)
     icon.update_menu()
 
 try:
-    icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'whisper-extension', 'icon.png')
+    icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'extension/icon', 'icon.png')
     image = Image.open(icon_path)
     icon = pystray.Icon("name", image, "Speech-to-Fire", menu=create_menu())
     

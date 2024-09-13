@@ -1,50 +1,43 @@
 {
-    "manifest_version": 2,
-    "name": "Speechfire",
-    "version": "1.2",
-    "description": "Transcribe your speech and paste the result into the focused text field.",
-    "permissions": [
-        "activeTab",
-        "tabs",
-        "storage",
-        "webRequest",
-        "webRequestBlocking",
-        "*://*/*"
-    ],
-    "background": {
-        "scripts": ["background.js"],
-        "persistent": false
-    },
-    "browser_action": {
-        "default_popup": "popup.html",
-        "default_icon": "icon.png"
-    },
-    "commands": {
-        "start_stop_transcription": {
-            "suggested_key": {
-                "default": "Ctrl+Alt+S"
-            },
-            "description": "Start/Stop transcription"
-        }
-    },
-    "content_security_policy": "script-src 'self'; object-src 'self';",
-    "web_accessible_resources": [
-        "sounds/start.mp3",
-        "sounds/stop.mp3",
-        "font/Geist-Black.otf",
-        "font/Geist-Bold.otf",
-        "font/Geist-Light.otf",
-        "font/Geist-Medium.otf",
-        "font/Geist-Regular.otf",
-        "font/Geist-SemiBold.otf",
-        "font/Geist-Thin.otf",
-        "font/Geist-UltraBlack.otf",
-        "font/Geist-UltraLight.otf"
-    ],
-    "content_scripts": [
-        {
-            "matches": ["<all_urls>"],
-            "js": ["content.js"]
-        }
-    ]
+  "manifest_version": 2,
+  "name": "Speechfire",
+  "version": "1.2",
+  "description": "Transcribe your speech and paste the result into the focused text field.",
+  "permissions": ["activeTab", "tabs", "storage", "webRequest", "webRequestBlocking", "*://*/*"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": "./icon/icon.png"
+  },
+  "commands": {
+    "start_stop_transcription": {
+      "suggested_key": {
+        "default": "Ctrl+Alt+S"
+      },
+      "description": "Start/Stop transcription"
+    }
+  },
+  "content_security_policy": "script-src 'self'; object-src 'self';",
+  "web_accessible_resources": [
+    "sounds/start.mp3",
+    "sounds/stop.mp3",
+    "font/Geist-Black.otf",
+    "font/Geist-Bold.otf",
+    "font/Geist-Light.otf",
+    "font/Geist-Medium.otf",
+    "font/Geist-Regular.otf",
+    "font/Geist-SemiBold.otf",
+    "font/Geist-Thin.otf",
+    "font/Geist-UltraBlack.otf",
+    "font/Geist-UltraLight.otf"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
 }
