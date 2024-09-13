@@ -54,7 +54,7 @@ python app.py
 
 This has only been tested on Windows and Pop_OS! (Ubuntu), but should work on any Linux system that supports the `appindicator3` library. You also need to install the following dependencies:
 
-- **Linux:** `sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1`
+- **Linux:** `sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1 && pip install PyGObject`
 
 ```bash
 python system-tray/start_tray_linux.py
