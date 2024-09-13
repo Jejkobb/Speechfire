@@ -26,7 +26,7 @@ def start_server():
     if flask_process is None:
         logging.info("Starting Flask server")
         venv_python = sys.executable
-        app_path = os.path.join(project_root, 'app.py')
+        app_path = os.path.join(project_root, 'server.py')
         flask_process = subprocess.Popen([venv_python, app_path])
 
 def stop_server():

@@ -59,7 +59,7 @@ Open extension.xpi in Firefox and it will install the extension for you.
 #### Directly
 
 ```bash
-python app.py
+python server.py
 ```
 
 #### By creating a system tray icon
