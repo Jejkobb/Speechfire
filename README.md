@@ -1,6 +1,18 @@
 # 🎙️ Speechfire 🔥
 
-**An offline speech-to-text extension for Firefox**
+**An offline multilingual speech-to-text extension for Firefox**
+
+## At a Glance
+
+- 🦊 Firefox extension icon:
+  - <img src="extension/icon/icon-red.png" alt="Red Icon" width="16" height="16"> Recording in progress
+  - <img src="extension/icon/icon.png" alt="White Icon" width="16" height="16"> Not recording
+- System tray icon:
+
+  - <img src="extension/icon/icon-green.png" alt="Green Icon" width="16" height="16"> Server is running
+  - <img src="extension/icon/icon.png" alt="White Icon" width="16" height="16"> Server is not running
+
+`ctrl+alt+s` to start/stop recording for transcription.
 
 ## Installation 💻
 
