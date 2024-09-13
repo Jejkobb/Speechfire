@@ -3,6 +3,8 @@ import os
 import signal
 import logging
 import sys
+import psutil
+import time
 
 # Set up logging
 logging.basicConfig(filename='tray_app.log', level=logging.DEBUG, 
@@ -31,8 +33,21 @@ def stop_server():
     global flask_process
     if flask_process:
         logging.info("Stopping Flask server")
-        os.kill(flask_process.pid, signal.SIGTERM)
+        parent = psutil.Process(flask_process.pid)
+        children = parent.children(recursive=True)
+        
+        for child in children:
+            child.terminate()
+        
+        parent.terminate()
+        
+        gone, alive = psutil.wait_procs(children + [parent], timeout=5)
+        
+        for p in alive:
+            p.kill()
+        
         flask_process = None
+        time.sleep(1)  # Give some time for ports to be released
 
 def exit_app():
     logging.info("Exiting tray app")

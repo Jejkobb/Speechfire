@@ -1,46 +1,58 @@
-from infi.systray import SysTrayIcon
+import pystray
 from PIL import Image
 import os
 from tray_helper import start_server, stop_server, exit_app, is_server_running
+import sys
+import logging
 
-class TrayIcon:
-    def __init__(self):
-        self.menu_options = (
-            ("Start Server", None, self.toggle_server),
-        )
-        self.systray = SysTrayIcon(self.get_icon_path(False), "Speech-to-Fire", self.menu_options, on_quit=self.exit_app)
-        self.systray.start()
+# Set up logging
+logging.basicConfig(filename='tray_app.log', level=logging.DEBUG, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
-    def get_icon_path(self, is_active):
-        icon_name = "icon-green.png" if is_active else "icon.png"
-        icon_path = os.path.abspath(f"./whisper-extension/{icon_name}")
-        ico_path = os.path.abspath(f"./whisper-extension/{icon_name.replace('.png', '.ico')}")
-        
-        # Convert PNG to ICO for Windows compatibility
-        img = Image.open(icon_path)
-        img.save(ico_path, format="ICO", sizes=[(32, 32)])
-        return ico_path
+# Change the working directory to the script's directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-    def toggle_server(self, systray):
+# Add the script's directory to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+logging.info("Tray app started")
+
+def on_clicked(icon, item):
+    if str(item) == "Start Server" or str(item) == "Stop Server":
         if is_server_running():
             stop_server()
-            self.update_icon_and_menu(False)
         else:
             start_server()
-            self.update_icon_and_menu(True)
+        update_icon_and_menu(icon)
+    elif str(item) == "Exit":
+        stop_server()
+        icon.stop()
 
-    def update_icon_and_menu(self, is_active):
-        new_icon = self.get_icon_path(is_active)
-        new_menu_options = (
-            ("Stop Server" if is_active else "Start Server", None, self.toggle_server),
-        )
-        self.systray.update(hover_text="Speech-to-Fire", icon=new_icon, menu_options=new_menu_options)
+def create_menu():
+    return pystray.Menu(
+        pystray.MenuItem("Start Server", on_clicked),
+        pystray.MenuItem("Exit", on_clicked)
+    )
 
-    def exit_app(self, systray):
-        exit_app()
+def update_icon_and_menu(icon):
+    is_running = is_server_running()
+    icon.menu = pystray.Menu(
+        pystray.MenuItem("Stop Server" if is_running else "Start Server", on_clicked),
+        pystray.MenuItem("Exit", on_clicked)
+    )
+    icon_name = "icon-green.png" if is_running else "icon.png"
+    icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'whisper-extension', icon_name)
+    icon.icon = Image.open(icon_path)
+    icon.update_menu()
 
-def main():
-    TrayIcon()
-
-if __name__ == "__main__":
-    main()
+try:
+    icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'whisper-extension', 'icon.png')
+    image = Image.open(icon_path)
+    icon = pystray.Icon("name", image, "Speech-to-Fire", menu=create_menu())
+    
+    # Update icon and menu initially
+    update_icon_and_menu(icon)
+    
+    icon.run()
+except Exception as e:
+    logging.error(f"An error occurred: {str(e)}")
