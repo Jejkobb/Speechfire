@@ -8,10 +8,10 @@
 
 ```bash
 # venv
-python -m venv whisper-env
+python -m venv speechfire
 
 # or conda
-conda create -n whisper-env
+conda create -n speechfire
 ```
 
 ### 2. Activate the virtual environment:
@@ -19,13 +19,13 @@ conda create -n whisper-env
 ```bash
 # venv
 ## Windows:
-whisper-env\Scripts\activate
+speechfire\Scripts\activate
 
 ## macOS/Linux:
-source whisper-env/bin/activate
+source speechfire/bin/activate
 
 # or conda
-conda activate whisper-env
+conda activate speechfire
 ```
 
 ### 3. Install python packages

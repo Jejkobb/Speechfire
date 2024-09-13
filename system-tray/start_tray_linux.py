@@ -10,7 +10,7 @@ GLib.set_application_name("Speech-to-Fire")
 
 class TrayIcon:
     def __init__(self):
-        icon_path = os.path.abspath("./whisper-extension")
+        icon_path = os.path.abspath("./extension")
         self.indicator = AppIndicator3.Indicator.new(
             "speech-to-fire",
             self.get_icon_name(False),
@@ -40,11 +40,11 @@ class TrayIcon:
         if is_server_running():
             stop_server()
             self.item_toggle.set_label("Start Server")
-            self.indicator.set_icon_full(self.get_icon_name(False), "Server Stopped")
+            self.indicator.set_icon(self.get_icon_name(False))
         else:
             start_server()
             self.item_toggle.set_label("Stop Server")
-            self.indicator.set_icon_full(self.get_icon_name(True), "Server Running")
+            self.indicator.set_icon(self.get_icon_name(True))
 
     def exit_app(self, widget):
         exit_app()
