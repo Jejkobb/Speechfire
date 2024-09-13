@@ -1,192 +1,229 @@
-/* Import custom Geist fonts from the "font" directory */
 @font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-Black.otf') format('opentype');
-    font-weight: 900;
+  font-family: "Geist";
+  src: url("font/Geist-Regular.otf") format("opentype");
+  font-weight: 400;
 }
 
 @font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-Bold.otf') format('opentype');
-    font-weight: 700;
+  font-family: "Geist";
+  src: url("font/Geist-Medium.otf") format("opentype");
+  font-weight: 500;
 }
 
 @font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-Light.otf') format('opentype');
-    font-weight: 300;
+  font-family: "Geist";
+  src: url("font/Geist-SemiBold.otf") format("opentype");
+  font-weight: 600;
 }
 
-@font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-Medium.otf') format('opentype');
-    font-weight: 500;
+:root {
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --accent: #ff9500;
+  --accent-soft: rgba(255, 149, 0, 0.1);
+  --border: #333333;
+  --slider-bg: #4a4a4a;
 }
 
-@font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-Regular.otf') format('opentype');
-    font-weight: 400;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-SemiBold.otf') format('opentype');
-    font-weight: 600;
-}
-
-@font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-Thin.otf') format('opentype');
-    font-weight: 100;
-}
-
-@font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-UltraBlack.otf') format('opentype');
-    font-weight: 950;
-}
-
-@font-face {
-    font-family: 'Geist';
-    src: url('font/Geist-UltraLight.otf') format('opentype');
-    font-weight: 200;
-}
-
-/* General styles */
 body {
-    background-color: #ffffff;
-    color: #000000;
-    padding: 1.5rem;
-    max-width: 28rem;
-    margin: 0 auto;
-    font-family: 'Geist', sans-serif;
+  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-/* Heading styles */
+.container {
+  width: 320px;
+  padding: 24px;
+  background: linear-gradient(145deg, #141414, #0a0a0a);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+header {
+  margin-bottom: 24px;
+}
+
 h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: #3b82f6; /* Primary color */
-    display: flex;
-    align-items: center;
+  font-size: 32px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
 }
 
-h1 svg {
-    width: 1.5rem; /* Set specific width */
-    height: 1.5rem; /* Set specific height */
-    margin-right: 0.5rem;
+.icon {
+  width: 36px;
+  height: 36px;
+  margin-right: 12px;
+  stroke: var(--accent);
 }
 
-/* Paragraph styles */
-p {
-    margin-bottom: 1.5rem;
-    font-size: 0.875rem;
+.shortcut-info {
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-#shortcut-help {
-    line-height: 1.5rem;
-}
-
-/* Code styles */
 kbd {
-    padding: 0.125rem 0.375rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #4b5563;
-    background-color: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.375rem;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-family: "Geist", monospace;
+  margin: 0 2px;
 }
 
-/* Container styles */
-.bg-gray-100 {
-    background-color: #f3f4f6;
+.settings {
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 24px;
 }
 
-.rounded-lg {
-    border-radius: 0.5rem;
+.setting {
+  margin-bottom: 24px;
+  position: relative;
 }
 
-.p-6 {
-    padding: 1.5rem;
+.setting:last-child {
+  margin-bottom: 0;
 }
 
-.shadow-lg {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px 0 rgba(0, 0, 0, 0.05);
+.setting::after {
+  content: "";
+  position: absolute;
+  left: -24px;
+  right: -24px;
+  bottom: -12px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
 }
 
-/* Settings section styles */
-h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: #3b82f6; /* Primary color */
+.setting:last-child::after {
+  display: none;
 }
 
-/* Label styles */
 label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+  display: block;
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
-/* Select dropdown styles */
 select {
-    width: 100%;
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 0.375rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: "Geist", sans-serif;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ff9500' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  transition: all 0.3s ease;
 }
 
-/* Volume section styles */
-.flex {
-    display: flex;
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
-.justify-between {
-    justify-content: space-between;
+.volume-control {
+  display: flex;
+  align-items: center;
 }
 
-.items-center {
-    align-items: center;
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--slider-bg);
+  outline: none;
+  margin-right: 12px;
 }
 
-.mb-2 {
-    margin-bottom: 0.5rem;
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.mb-4 {
-    margin-bottom: 1rem;
-    margin-top: 0;
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.mt-6 {
-    margin-top: 1rem;
-    margin-bottom: 0;
+input[type="range"]::-webkit-slider-thumb:hover,
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.1);
 }
 
-.text-sm {
-    font-size: 0.875rem;
+#volumePercentage {
+  font-size: 16px;
+  color: var(--text-secondary);
+  width: 45px;
+  text-align: right;
 }
 
-.text-gray-600 {
-    color: #4b5563;
+footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
-.w-full {
-    width: 100%;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Italic text styles */
-.text-xs {
-    font-size: 0.75rem;
+.container {
+  animation: fadeIn 0.4s ease-out;
 }
 
-.italic {
-    font-style: italic;
+select,
+input[type="range"] {
+  transition: all 0.3s ease;
+}
+
+select:hover,
+input[type="range"]:hover {
+  transform: scale(1.02);
 }

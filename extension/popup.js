@@ -1,62 +1,65 @@
-// Function to save the settings to storage
-function saveSettings(volume, language) {
-    chrome.storage.local.set({
-        volume: volume,
-        language: language
-    }, () => {
-        console.log('Settings saved:', { volume, language });
+class SpeechfireSettings {
+  constructor() {
+    this.volumeSlider = document.getElementById("volumeSlider");
+    this.volumePercentage = document.getElementById("volumePercentage");
+    this.languageDropdown = document.getElementById("languageDropdown");
+
+    this.initEventListeners();
+    this.restoreSettings();
+  }
+
+  initEventListeners() {
+    this.volumeSlider.addEventListener("input", () => this.handleVolumeChange());
+    this.languageDropdown.addEventListener("change", () => this.handleLanguageChange());
+    document.addEventListener("DOMContentLoaded", () => this.updateVolumePercentage());
+  }
+
+  handleVolumeChange() {
+    const volume = this.volumeSlider.value / 100;
+    this.updateVolumePercentage();
+    this.saveSettings();
+    this.sendMessageToBackground({ action: "updateVolume", volume });
+  }
+
+  handleLanguageChange() {
+    const selectedLanguage = this.languageDropdown.value;
+    this.saveSettings();
+    this.sendMessageToBackground({ action: "updateLanguage", language: selectedLanguage });
+  }
+
+  updateVolumePercentage() {
+    this.volumePercentage.textContent = `${this.volumeSlider.value}%`;
+  }
+
+  saveSettings() {
+    const settings = {
+      volume: this.volumeSlider.value / 100,
+      language: this.languageDropdown.value,
+    };
+
+    chrome.storage.local.set(settings, () => {
+      console.log("Settings saved:", settings);
     });
-}
+  }
 
-// Function to restore settings from storage
-function restoreSettings() {
-    chrome.storage.local.get(['volume', 'language'], (data) => {
-        if (data.volume !== undefined) {
-            volumeSlider.value = data.volume * 100;  // scale back to 0-100
-        }
+  restoreSettings() {
+    chrome.storage.local.get(["volume", "language"], (data) => {
+      if (data.volume !== undefined) {
+        this.volumeSlider.value = data.volume * 100;
+      }
 
-        if (data.language !== undefined) {
-            languageDropdown.value = data.language;
-        }
+      if (data.language !== undefined) {
+        this.languageDropdown.value = data.language;
+      }
 
-        console.log('Settings restored:', data);
-
-        // Update the volume percentage display after restoring settings
-        updateVolumePercentage();
+      this.updateVolumePercentage();
+      console.log("Settings restored:", data);
     });
+  }
+
+  sendMessageToBackground(message) {
+    chrome.runtime.sendMessage(message);
+  }
 }
 
-// Volume slider change event
-const volumeSlider = document.getElementById("volumeSlider");
-const volumePercentage = document.getElementById('volumePercentage');
-
-// Function to update the volume percentage display
-function updateVolumePercentage() {
-    volumePercentage.textContent = volumeSlider.value + '%';
-}
-
-volumeSlider.addEventListener("input", () => {
-    const volume = volumeSlider.value / 100;
-    chrome.runtime.sendMessage({ action: "updateVolume", volume: volume });
-    saveSettings(volume, languageDropdown.value);
-
-    // Update the volume percentage display when the slider changes
-    updateVolumePercentage();
-});
-
-// Language dropdown change event
-const languageDropdown = document.getElementById("languageDropdown");
-languageDropdown.addEventListener("change", () => {
-    const selectedLanguage = languageDropdown.value;
-    chrome.runtime.sendMessage({ action: "updateLanguage", language: selectedLanguage });
-    saveSettings(volumeSlider.value / 100, selectedLanguage);
-    console.log(`Selected language: ${selectedLanguage}`);
-});
-
-// When the popup loads, restore the settings from storage
-document.addEventListener("DOMContentLoaded", () => {
-    restoreSettings();
-
-    // Initialize the volume percentage display
-    updateVolumePercentage();
-});
+new SpeechfireSettings();
