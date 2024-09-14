@@ -76,3 +76,6 @@ Thumbs.db
 
 # Environment variables
 .env
+
+# Illustrator files
+*.ai

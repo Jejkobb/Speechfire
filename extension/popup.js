@@ -12,11 +12,13 @@ class SpeechfireSettings {
     this.volumeSlider.addEventListener("input", () => this.handleVolumeChange());
     this.languageDropdown.addEventListener("change", () => this.handleLanguageChange());
     document.addEventListener("DOMContentLoaded", () => this.updateVolumePercentage());
+    document.addEventListener("DOMContentLoaded", () => this.updateSliderBackground()); // Update on page load
   }
 
   handleVolumeChange() {
     const volume = this.volumeSlider.value / 100;
     this.updateVolumePercentage();
+    this.updateSliderBackground();
     this.saveSettings();
     this.sendMessageToBackground({ action: "updateVolume", volume });
   }
@@ -29,6 +31,12 @@ class SpeechfireSettings {
 
   updateVolumePercentage() {
     this.volumePercentage.textContent = `${this.volumeSlider.value}%`;
+  }
+
+  updateSliderBackground() {
+    const value = this.volumeSlider.value;
+    const percentage = (value / 100) * 100;
+    this.volumeSlider.style.background = `linear-gradient(to right, var(--accent) ${percentage}%, var(--slider-bg) ${percentage}%)`;
   }
 
   saveSettings() {
@@ -53,6 +61,7 @@ class SpeechfireSettings {
       }
 
       this.updateVolumePercentage();
+      this.updateSliderBackground(); // Update background when restoring settings
       console.log("Settings restored:", data);
     });
   }
