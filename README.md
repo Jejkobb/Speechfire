@@ -43,6 +43,11 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
    python system-tray/start_tray_linux.py
    ```
 
+   After launching the system tray application:
+
+   1. Right-click on the tray icon
+   2. Select "Start Server" from the menu
+
 2. **Use the extension**
 
    - Focus on a text field in Firefox
