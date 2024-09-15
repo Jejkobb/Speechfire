@@ -1,4 +1,4 @@
-# 🔥 Speechfire
+# Speechfire 🔥
 
 **Offline multilingual speech-to-text Firefox extension**
 
