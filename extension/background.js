@@ -37,7 +37,7 @@ function toggleRecording() {
     stopSound.play();
 
     // Stop recording
-    browser.browserAction.setIcon({ path: "./icon/icon.png" });
+    browser.browserAction.setIcon({ path: "./icon/icon-128.png" });
     isRecording = false;
   }
 }
