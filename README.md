@@ -1,4 +1,4 @@
-# Speechfire 🔥
+# Speechfire <img src="extension/icon/icon-128.png" alt="🔥" width="25" height="25">
 
 **Offline multilingual speech-to-text Firefox extension**
 
