@@ -1,96 +1,76 @@
-# 🎙️ Speechfire 🔥
+# 🔥 Speechfire
 
-**An offline multilingual speech-to-text extension for Firefox**
+**Offline multilingual speech-to-text Firefox extension**
 
-## At a Glance
+## Overview
 
-- 🦊 Firefox extension icon:
-  - <img src="extension/icon/icon-red.png" alt="Red Icon" width="16" height="16"> Recording in progress
+Speechfire is a Firefox extension that provides offline speech-to-text functionality. It uses a local server for processing and supports multiple languages.
+
+### Key Features
+
+- 🦊 Firefox extension for easy access
+- 🖥️ Local server for offline processing
+- 🌐 Multilingual support
+- ⌨️ Hotkey (`ctrl+alt+s`) to start/stop recording
+
+## Installation
+
+1. **Set up Python environment**
+
+   ```bash
+   python -m venv speechfire
+   source speechfire/bin/activate  # On Windows: speechfire\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+2. **Install Firefox Extension**
+   - Open `extension.xpi` in Firefox
+
+## Usage
+
+1. **Start the server**
+
+   ```bash
+   python server.py
+   ```
+
+   Or use the system tray icon:
+
+   ```bash
+   # On Windows:
+   python system-tray/start_tray_windows.py
+   # On Linux:
+   python system-tray/start_tray_linux.py
+   ```
+
+   After launching the system tray application:
+
+   1. Right-click on the tray icon
+   2. Select "Start Server" from the menu
+
+2. **Use the extension**
+
+   - Focus on a text field in Firefox
+   - Press `ctrl+alt+s` to start/stop recording
+   - Transcription will appear in the focused field
+
+3. **Stop the server**
+   - Press `ctrl+c` in the terminal
+   - Or use the system tray icon menu
+
+## Icon Guide
+
+- Firefox Extension:
+  - <img src="extension/icon/icon-red.png" alt="Red Icon" width="16" height="16"> Recording
   - <img src="extension/icon/icon.png" alt="White Icon" width="16" height="16"> Not recording
-- System tray icon:
+- System Tray:
+  - <img src="extension/icon/icon-green.png" alt="Green Icon" width="16" height="16"> Server running
+  - <img src="extension/icon/icon.png" alt="White Icon" width="16" height="16"> Server not running
 
-  - <img src="extension/icon/icon-green.png" alt="Green Icon" width="16" height="16"> Server is running
-  - <img src="extension/icon/icon.png" alt="White Icon" width="16" height="16"> Server is not running
+## Additional Notes
 
-`ctrl+alt+s` to start/stop recording for transcription.
-
-## Installation 💻
-
-### 1. Create a virtual environment:
-
-```bash
-# venv
-python -m venv speechfire
-
-# or conda
-conda create -n speechfire
-```
-
-### 2. Activate the virtual environment:
-
-```bash
-# venv
-## Windows:
-speechfire\Scripts\activate
-
-## macOS/Linux:
-source speechfire/bin/activate
-
-# or conda
-conda activate speechfire
-```
-
-### 3. Install python packages
-
-```bash
-pip install -r requirements.txt
-# or for specific versions that are known to work:
-pip install -r requirements-lock.txt
-```
-
-### 4. Install Extension in Firefox
-
-Open extension.xpi in Firefox and it will install the extension for you.
-
-## Usage 📝
-
-### 1. Start the server (don't forget to activate the environment first)
-
-#### Directly
-
-```bash
-python server.py
-```
-
-#### By creating a system tray icon
-
-This has only been tested on Windows and Pop_OS! (Ubuntu), but should work on any Linux system that supports the `appindicator3` library. You also need to install the following dependencies:
-
-- **Linux:** `sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1 && pip install PyGObject`
-
-```bash
-python system-tray/start_tray_linux.py
-# or
-python system-tray/start_tray_windows.py
-```
-
-Locate the tray icon in your system tray, right click it and select "Start Server".
-
-### 2. Record audio
-
-- Place your cursor on a text field in Firefox.
-- Press `ctrl+alt+s` to start recording.
-- Press `ctrl+alt+s` to stop recording.
-- The transcription will be displayed in the focused text field.
-
-### 3. Stop the server when you're done
-
-#### Directly
-
-```bash
-ctrl+c
-```
-
-#### By stopping the system tray icon
-
-Right click the system tray icon and select "Stop Server". To stop the process, right click the icon and select "Exit".
+- For Linux system tray support:
+  ```bash
+  sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
+  pip install PyGObject
+  ```
