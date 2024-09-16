@@ -6,20 +6,20 @@ import os
 from tray_helper import start_server, stop_server, exit_app, is_server_running
 
 # Sets the application name for the tray icon
-GLib.set_application_name("Speech-to-Fire")
+GLib.set_application_name("Speechfire")
 
 class TrayIcon:
     def __init__(self):
         icon_path = os.path.abspath("./extension/icon")
         self.indicator = AppIndicator3.Indicator.new(
-            "speech-to-fire",
+            "Speechfire",
             self.get_icon_name(False),
             AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
         self.indicator.set_icon_theme_path(icon_path)
         self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         self.menu = self.build_menu()
         self.indicator.set_menu(self.menu)
-        self.indicator.set_icon_full(self.get_icon_name(False), "Speech-to-Fire")
+        self.indicator.set_icon_full(self.get_icon_name(False), "Speechfire")
 
     def get_icon_name(self, is_active):
         return "icon-green" if is_active else "icon"
@@ -41,11 +41,11 @@ class TrayIcon:
         if is_server_running():
             stop_server()
             self.item_toggle.set_label("Start Server")
-            self.indicator.set_icon_full(self.get_icon_name(False), "Speech-to-Fire (Inactive)")
+            self.indicator.set_icon_full(self.get_icon_name(False), "Speechfire (Inactive)")
         else:
             start_server()
             self.item_toggle.set_label("Stop Server")
-            self.indicator.set_icon_full(self.get_icon_name(True), "Speech-to-Fire (Active)")
+            self.indicator.set_icon_full(self.get_icon_name(True), "Speechfire (Active)")
 
     def exit_app(self, widget):
         exit_app()

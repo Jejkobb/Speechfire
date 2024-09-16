@@ -48,7 +48,7 @@ def update_icon_and_menu(icon):
 try:
     icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'extension/icon', 'icon.png')
     image = Image.open(icon_path)
-    icon = pystray.Icon("name", image, "Speech-to-Fire", menu=create_menu())
+    icon = pystray.Icon("name", image, "Speechfire", menu=create_menu())
     
     # Update icon and menu initially
     update_icon_and_menu(icon)

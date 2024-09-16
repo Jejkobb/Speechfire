@@ -29,6 +29,7 @@ venv.bak/
 venv3/
 *.env
 whisper-env/
+speechfire/
 
 # Jupyter Notebook
 .ipynb_checkpoints
