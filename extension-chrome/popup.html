@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speechfire</title>
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>
+          Speechfire
+          <img class="icon" src="icon/icon-128.png"></img>
+        </h1>
+      </header>
+
+      <main>
+        <div class="shortcut-info">
+          <span>Toggle recording:</span>
+          <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>
+        </div>
+
+        <div class="settings">
+          <div class="setting">
+            <label for="languageDropdown">Language</label>
+            <select id="languageDropdown" class="w-full bg-white border border-gray-300 rounded-md py-2 px-3 text-sm">
+              <option value="Dutch">Dutch</option>
+              <option value="Spanish">Spanish</option>
+              <option value="Korean">Korean</option>
+              <option value="Italian">Italian</option>
+              <option value="German">German</option>
+              <option value="Russian">Russian</option>
+              <option value="Portuguese">Portuguese</option>
+              <option value="Polish">Polish</option>
+              <option value="Thai">Thai</option>
+              <option value="Indonesian">Indonesian</option>
+              <option value="Mandarin (TW)">Mandarin (TW)</option>
+              <option value="Swedish">Swedish</option>
+              <option value="Czech">Czech</option>
+              <option value="English" selected>English</option>
+              <option value="Japanese">Japanese</option>
+              <option value="French">French</option>
+              <option value="Romanian">Romanian</option>
+              <option value="Cantonese (CN)">Cantonese (CN)</option>
+              <option value="Turkish">Turkish</option>
+              <option value="Catalan">Catalan</option>
+              <option value="Hungarian">Hungarian</option>
+              <option value="Ukrainian">Ukrainian</option>
+              <option value="Greek">Greek</option>
+              <option value="Bulgarian">Bulgarian</option>
+              <option value="Arabic">Arabic</option>
+              <option value="Serbian">Serbian</option>
+              <option value="Macedonian">Macedonian</option>
+              <option value="Cantonese (HK)">Cantonese (HK)</option>
+              <option value="Latvian">Latvian</option>
+              <option value="Slovenian">Slovenian</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Galician">Galician</option>
+              <option value="Danish">Danish</option>
+              <option value="Urdu">Urdu</option>
+              <option value="Slovak">Slovak</option>
+              <option value="Hebrew">Hebrew</option>
+              <option value="Finnish">Finnish</option>
+              <option value="Azerbaijani">Azerbaijani</option>
+              <option value="Lithuanian">Lithuanian</option>
+              <option value="Estonian">Estonian</option>
+              <option value="Nynorsk">Nynorsk</option>
+              <option value="Welsh">Welsh</option>
+              <option value="Punjabi">Punjabi</option>
+              <option value="Afrikaans">Afrikaans</option>
+              <option value="Persian">Persian</option>
+              <option value="Basque">Basque</option>
+              <option value="Vietnamese">Vietnamese</option>
+              <option value="Bengali">Bengali</option>
+              <option value="Nepali">Nepali</option>
+              <option value="Marathi">Marathi</option>
+              <option value="Belarusian">Belarusian</option>
+              <option value="Kazakh">Kazakh</option>
+              <option value="Armenian">Armenian</option>
+              <option value="Swahili">Swahili</option>
+              <option value="Tamil">Tamil</option>
+              <option value="Albanian">Albanian</option>
+              <option value="Filipino">Filipino</option>
+              <option value="Bosnian">Bosnian</option>
+            </select>
+          </div>
+
+          <div class="setting">
+            <label for="volumeSlider">Recording Indicator Volume</label>
+            <div class="volume-control">
+              <input type="range" min="0" max="100" value="100" id="volumeSlider" />
+              <span id="volumePercentage">100%</span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>Ensure Flask server is running for transcription.</p>
+      </footer>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
