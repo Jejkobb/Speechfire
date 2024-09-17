@@ -1,18 +1,13 @@
 // content.js
 console.log("Content script loaded");
 
-const startSound = new Audio(chrome.runtime.getURL("sounds/start.mp3"));
-const stopSound = new Audio(chrome.runtime.getURL("sounds/stop.mp3"));
-
-console.log("Audio objects created");
-
-let mediaRecorder;
-let audioChunks = [];
-let isRecording = false;
-
-// Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Message received in content script:", message);
+
+  if (message.action === "ping") {
+    sendResponse({ success: true });
+    return;
+  }
 
   if (message.action === "toggleRecording") {
     console.log("Toggle recording command received");
@@ -32,10 +27,62 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       .play()
       .then(() => {
         console.log("Sound played successfully");
+        sendResponse({ success: true });
       })
       .catch((error) => {
         console.error("Error playing sound:", error);
+        sendResponse({ success: false, error: error.message });
       });
+    return true; // Indicates that the response will be sent asynchronously
+  }
+
+  // Send a response to acknowledge receipt of the message
+  sendResponse({ received: true });
+});
+
+const startSound = new Audio(chrome.runtime.getURL("sounds/start.mp3"));
+const stopSound = new Audio(chrome.runtime.getURL("sounds/stop.mp3"));
+
+console.log("Audio objects created");
+
+let mediaRecorder;
+let audioChunks = [];
+let isRecording = false;
+
+// Listen for messages from the background script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("Message received in content script:", message);
+
+  if (message.action === "ping") {
+    sendResponse({ success: true });
+    return;
+  }
+
+  if (message.action === "toggleRecording") {
+    console.log("Toggle recording command received");
+    if (message.isRecording) {
+      console.log("Starting recording...");
+      startRecording();
+    } else {
+      console.log("Stopping recording...");
+      stopRecording();
+    }
+    sendResponse({ received: true });
+  } else if (message.action === "playSound") {
+    console.log("Play sound command received:", message.sound);
+    const sound = message.sound === "start" ? startSound : stopSound;
+    sound.volume = message.volume;
+    sound
+      .play()
+      .then(() => {
+        console.log("Sound played successfully");
+        sendResponse({ success: true });
+      })
+      .catch((error) => {
+        console.error("Error playing sound:", error);
+        sendResponse({ success: false, error: error.message });
+      });
+    return true; // Indicates that the response will be sent asynchronously
   }
 
   // Send a response to acknowledge receipt of the message

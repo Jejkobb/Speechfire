@@ -35,45 +35,114 @@ function toggleRecording() {
     }
   });
 
-  // Notify content script to start/stop recording
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs[0]) {
-      console.log("Sending toggleRecording message to content script");
-      chrome.tabs.sendMessage(tabs[0].id, { action: "toggleRecording", isRecording: isRecording }, (response) => {
-        if (chrome.runtime.lastError) {
-          console.error("Error sending toggleRecording message:", chrome.runtime.lastError);
-          // If content script is not ready, inject it
-          chrome.scripting.executeScript(
-            {
-              target: { tabId: tabs[0].id },
-              files: ["content.js"],
-            },
-            () => {
-              if (chrome.runtime.lastError) {
-                console.error("Error injecting content script:", chrome.runtime.lastError);
+      if (isAllowedUrl(tabs[0].url)) {
+        ensureContentScriptInjected(tabs[0].id, () => {
+          sendMessageToContentScript(
+            tabs[0].id,
+            { action: "playSound", sound: isRecording ? "start" : "stop", volume: volumeLevel },
+            (response) => {
+              if (response && response.success) {
+                console.log("Sound played successfully");
+                sendMessageToContentScript(tabs[0].id, { action: "toggleRecording", isRecording: isRecording }, (response) => {
+                  if (response && response.success) {
+                    console.log("Recording toggled in content script");
+                  } else {
+                    console.error("Error toggling recording:", response ? response.error : "Unknown error");
+                  }
+                });
               } else {
-                console.log("Content script injected, retrying message");
-                // Retry sending the message after a short delay
-                setTimeout(() => {
-                  chrome.tabs.sendMessage(tabs[0].id, { action: "toggleRecording", isRecording: isRecording }, (response) => {
-                    if (chrome.runtime.lastError) {
-                      console.error("Error sending toggleRecording message after injection:", chrome.runtime.lastError);
-                    } else {
-                      console.log("ToggleRecording message sent after injection, response:", response);
-                    }
-                  });
-                }, 100);
+                console.error("Error playing sound:", response ? response.error : "Unknown error");
               }
             }
           );
-        } else {
-          console.log("ToggleRecording message sent, response:", response);
-        }
-      });
+        });
+      } else {
+        console.log("Cannot inject script into this page:", tabs[0].url);
+        // Optionally, you can show a notification to the user here
+      }
     } else {
-      console.log("No active tab found for toggling recording");
+      console.log("No active tab found for playing sound and toggling recording");
     }
   });
+}
+
+function isAllowedUrl(url) {
+  return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file://");
+}
+
+function ensureContentScriptInjected(tabId, callback) {
+  chrome.tabs.sendMessage(tabId, { action: "ping" }, (response) => {
+    if (chrome.runtime.lastError || !response) {
+      console.log("Content script not found, injecting...");
+      chrome.scripting.executeScript(
+        {
+          target: { tabId: tabId },
+          files: ["content.js"],
+        },
+        (injectionResults) => {
+          if (chrome.runtime.lastError) {
+            console.error("Error injecting content script:", chrome.runtime.lastError);
+          } else {
+            console.log("Content script injected successfully");
+            callback();
+          }
+        }
+      );
+    } else {
+      console.log("Content script already present");
+      callback();
+    }
+  });
+}
+
+function sendMessageToContentScript(tabId, message, callback) {
+  chrome.tabs.sendMessage(tabId, message, (response) => {
+    if (chrome.runtime.lastError) {
+      console.error("Error sending message:", chrome.runtime.lastError);
+      callback({ success: false, error: chrome.runtime.lastError.message });
+    } else {
+      callback(response);
+    }
+  });
+}
+
+function handleSoundResponse(response) {
+  if (response && response.success) {
+    console.log("Sound played successfully");
+    // Now send the toggleRecording message
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: "toggleRecording", isRecording: isRecording }, (response) => {
+          if (chrome.runtime.lastError) {
+            console.error("Error toggling recording:", chrome.runtime.lastError);
+          } else {
+            console.log("Recording toggled in content script");
+          }
+        });
+      }
+    });
+  } else {
+    console.error("Error playing sound:", response ? response.error : "Unknown error");
+  }
+}
+
+function injectContentScript(tabId, callback) {
+  chrome.scripting.executeScript(
+    {
+      target: { tabId: tabId },
+      files: ["content.js"],
+    },
+    (injectionResults) => {
+      if (chrome.runtime.lastError) {
+        console.error("Error injecting content script:", chrome.runtime.lastError);
+      } else {
+        console.log("Content script injected successfully");
+        if (callback) callback();
+      }
+    }
+  );
 }
 
 // Load settings from chrome storage when the background script starts
