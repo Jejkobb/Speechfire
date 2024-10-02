@@ -1,9 +1,5 @@
 console.log("Background script loaded");
 
-chrome.runtime.onInstalled.addListener(() => {
-  console.log("Whisper Live Transcription Extension Installed");
-});
-
 let isRecording = false;
 let volumeLevel = 1.0;
 let selectedLanguage = "English";
@@ -26,70 +22,33 @@ function toggleRecording() {
     }
   });
 
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    if (tabs[0] && isAllowedUrl(tabs[0].url)) {
-      ensureContentScriptInjected(tabs[0].id, () => {
-        sendMessageToContentScript(
-          tabs[0].id,
-          { action: "playSound", sound: isRecording ? "start" : "stop", volume: volumeLevel },
-          (response) => {
-            if (response && response.success) {
-              sendMessageToContentScript(tabs[0].id, { action: "toggleRecording", isRecording }, (resp) => {
-                if (resp && resp.success) {
-                  console.log("Recording state updated in content script");
-                } else {
-                  console.error("Failed to update recording state:", resp ? resp.error : "Unknown error");
-                }
-              });
-            } else {
-              console.error("Failed to play sound:", response ? response.error : "Unknown error");
-            }
-          }
-        );
-      });
-    } else {
-      console.log("Cannot inject script into this page:", tabs[0]?.url || "No active tab");
-    }
-  });
-}
-
-function isAllowedUrl(url) {
-  return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file://");
-}
-
-function ensureContentScriptInjected(tabId, callback) {
-  chrome.tabs.sendMessage(tabId, { action: "ping" }, (response) => {
-    if (chrome.runtime.lastError || !response) {
+  chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+    if (tab && isAllowedUrl(tab.url)) {
       chrome.scripting.executeScript(
         {
-          target: { tabId },
+          target: { tabId: tab.id },
           files: ["content.js"],
         },
         () => {
           if (chrome.runtime.lastError) {
             console.error("Error injecting content script:", chrome.runtime.lastError);
           } else {
-            console.log("Content script injected successfully");
-            callback();
+            chrome.tabs.sendMessage(tab.id, {
+              action: "toggleRecording",
+              isRecording,
+              volume: volumeLevel,
+            });
           }
         }
       );
     } else {
-      console.log("Content script already present");
-      callback();
+      console.log("Cannot inject script into this page:", tab?.url || "No active tab");
     }
   });
 }
 
-function sendMessageToContentScript(tabId, message, callback) {
-  chrome.tabs.sendMessage(tabId, message, (response) => {
-    if (chrome.runtime.lastError) {
-      console.error("Error sending message:", chrome.runtime.lastError);
-      callback({ success: false, error: chrome.runtime.lastError.message });
-    } else {
-      callback(response);
-    }
-  });
+function isAllowedUrl(url) {
+  return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("file://");
 }
 
 // Load settings from chrome storage on startup
