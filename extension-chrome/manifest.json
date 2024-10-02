@@ -22,8 +22,8 @@
   "commands": {
     "start_stop_transcription": {
       "suggested_key": {
-        "default": "Ctrl+Shift+A",
-        "mac": "Command+Shift+A"
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
       },
       "description": "Start/Stop transcription"
     }

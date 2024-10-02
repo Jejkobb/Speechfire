@@ -1,4 +1,4 @@
-# Speechfire <img src="extension/icon/icon-128.png" alt="🔥" width="32" height="32">
+# Speechfire <img src="extension-firefox/icon/icon-128.png" alt="🔥" width="32" height="32">
 
 **Offline multilingual speech-to-text Firefox extension**
 
@@ -8,10 +8,10 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
 
 ### Key Features
 
-- 🦊 Firefox extension for easy access
+- 🦊✨ Firefox and Chrome support
 - 🖥️ Local server for offline processing
 - 🌐 Multilingual support
-- ⌨️ Hotkey (`ctrl+alt+s`) to start/stop recording
+- ⌨️ Hotkey (`ctrl+shift+s`) to start/stop recording
 
 ## Installation
 
@@ -24,7 +24,7 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
    ```
 
 2. **Install Firefox Extension**
-   - Open `extension.xpi` in Firefox
+   - Open `extension-firefox.xpi` in Firefox
 
 ## Usage
 
@@ -51,7 +51,7 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
 2. **Use the extension**
 
    - Focus on a text field in Firefox
-   - Press `ctrl+alt+s` to start/stop recording
+   - Press `ctrl+shift+s` to start/stop recording
    - Transcription will appear in the focused field
 
 3. **Stop the server**
@@ -61,11 +61,11 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
 ## Icon Guide
 
 - Firefox Extension:
-  - <img src="extension/icon/icon-red.png" alt="Red Icon" width="16" height="16"> Recording
-  - <img src="extension/icon/icon.png" alt="White Icon" width="16" height="16"> Not recording
+  - <img src="extension-firefox/icon/icon-red.png" alt="Red Icon" width="16" height="16"> Recording
+  - <img src="extension-firefox/icon/icon.png" alt="White Icon" width="16" height="16"> Not recording
 - System Tray:
-  - <img src="extension/icon/icon-green.png" alt="Green Icon" width="16" height="16"> Server running
-  - <img src="extension/icon/icon.png" alt="White Icon" width="16" height="16"> Server not running
+  - <img src="extension-firefox/icon/icon-green.png" alt="Green Icon" width="16" height="16"> Server running
+  - <img src="extension-firefox/icon/icon.png" alt="White Icon" width="16" height="16"> Server not running
 
 ## Additional Notes
 

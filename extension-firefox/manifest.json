@@ -24,7 +24,7 @@
   "commands": {
     "start_stop_transcription": {
       "suggested_key": {
-        "default": "Ctrl+Alt+S"
+        "default": "Ctrl+Shift+S"
       },
       "description": "Start/Stop transcription"
     }

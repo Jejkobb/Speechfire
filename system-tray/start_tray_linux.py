@@ -10,7 +10,7 @@ GLib.set_application_name("Speechfire")
 
 class TrayIcon:
     def __init__(self):
-        icon_path = os.path.abspath("./extension/icon")
+        icon_path = os.path.abspath("./extension-firefox/icon")
         self.indicator = AppIndicator3.Indicator.new(
             "Speechfire",
             self.get_icon_name(False),
