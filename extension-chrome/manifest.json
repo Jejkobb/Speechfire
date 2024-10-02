@@ -9,7 +9,7 @@
     "service_worker": "background.js"
   },
   "icons": {
-    "128": "./icon/icon-128.png"
+    "128": "icon/icon-128.png"
   },
   "action": {
     "default_popup": "popup.html",
@@ -22,8 +22,8 @@
   "commands": {
     "start_stop_transcription": {
       "suggested_key": {
-        "default": "Ctrl+Shift+S",
-        "mac": "Command+Shift+S"
+        "default": "Ctrl+Shift+A",
+        "mac": "Command+Shift+A"
       },
       "description": "Start/Stop transcription"
     }
