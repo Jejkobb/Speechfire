@@ -65,8 +65,8 @@ h1 {
   width: 36px;
   height: 36px;
   margin-left: 6px;
-  position:relative;
-  bottom:3px;
+  position: relative;
+  bottom: 3px;
   stroke: var(--accent);
 }
 
@@ -88,6 +88,24 @@ kbd {
   font-size: 12px;
   font-family: "Geist", monospace;
   margin: 0 2px;
+}
+
+.key-combo {
+  display: flex;
+  align-items: center;
+}
+
+.key-combo kbd {
+  margin: 0;
+}
+
+.key-combo kbd:first-child {
+  margin-right: 2px;
+}
+
+.key-combo span {
+  margin: 0 4px;
+  color: var(--text-secondary);
 }
 
 .settings {
@@ -186,7 +204,6 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
 
 input[type="range"]::-webkit-slider-thumb:hover,
 input[type="range"]::-moz-range-thumb:hover,
