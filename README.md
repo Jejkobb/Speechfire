@@ -11,7 +11,7 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
 - 🦊✨ Firefox and Chrome support
 - 🖥️ Local server for offline processing
 - 🌐 Multilingual support
-- ⌨️ Hotkey (`ctrl+shift+s`) to start/stop recording
+- ⌨️ Hotkey (`Alt+A`) to start/stop recording
 
 ## Installation
 
@@ -51,7 +51,7 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
 2. **Use the extension**
 
    - Focus on a text field in Firefox
-   - Press `ctrl+shift+s` to start/stop recording
+   - Press `Alt+A` to start/stop recording
    - Transcription will appear in the focused field
 
 3. **Stop the server**
