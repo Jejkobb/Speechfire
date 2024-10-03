@@ -3,7 +3,7 @@
   "name": "Speechfire",
   "version": "1.4",
   "description": "Transcribe your speech and paste the result into the focused text field.",
-  "permissions": ["activeTab", "tabs", "storage", "webRequest", "webRequestBlocking", "*://*/*"],
+  "permissions": ["activeTab", "storage", "webRequest", "webRequestBlocking", "*://*/*"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false

@@ -21,7 +21,6 @@ def home():
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
-    # Get the language from the query string, default to 'English' if not provided
     language = request.args.get('lang', 'English')
     
     if 'audio_data' not in request.files:
@@ -29,18 +28,20 @@ def transcribe():
 
     audio_file = request.files['audio_data']
 
-    # Save the file temporarily
+    if audio_file.filename == '':
+        return jsonify({"error": "No selected file!"}), 400
+
     try:
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_audio_file:
             audio_file.save(temp_audio_file.name)
 
-        # Transcribe the temporary audio file using Whisper with the selected language
         result = model.transcribe(temp_audio_file.name, fp16=False, language=language)
+        transcription = result.get("text", "")
 
-        transcription = result["text"]
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
     finally:
-        # Ensure temp file is deleted even if transcription fails
         if os.path.exists(temp_audio_file.name):
             os.remove(temp_audio_file.name)
 
@@ -48,4 +49,4 @@ def transcribe():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)

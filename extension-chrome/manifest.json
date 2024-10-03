@@ -4,7 +4,6 @@
   "version": "1.4",
   "description": "Transcribe your speech and paste the result into the focused text field.",
   "permissions": ["activeTab", "storage", "scripting"],
-  "host_permissions": ["http://*/*", "https://*/*"],
   "background": {
     "service_worker": "background.js"
   },
