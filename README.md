@@ -55,7 +55,7 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
    - Transcription will appear in the focused field
 
 3. **Stop the server**
-   - Press `ctrl+c` in the terminal
+   - Press `Ctrl+C` in the terminal
    - Or use the system tray icon menu
 
 ## Icon Guide
