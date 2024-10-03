@@ -12,7 +12,7 @@ distro
 fastapi
 filelock
 Flask
-Flask-Cors
+Flask-cors
 Flask-SocketIO
 fonttools
 fsspec
