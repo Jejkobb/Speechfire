@@ -11,24 +11,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log(`Toggle recording command received: ${message.isRecording ? "Start" : "Stop"}`);
     if (message.isRecording) {
       startRecording();
+      playSound("start", message.volume);
     } else {
       stopRecording();
+      playSound("stop", message.volume);
     }
     sendResponse({ success: true });
-  } else if (message.action === "playSound") {
-    const sound = message.sound === "start" ? startSound : stopSound;
-    sound.volume = message.volume;
-    sound
-      .play()
-      .then(() => {
-        console.log("Sound played successfully");
-        sendResponse({ success: true });
-      })
-      .catch((error) => {
-        console.error("Error playing sound:", error);
-        sendResponse({ success: false, error: error.message });
-      });
-    return true; // Indicates asynchronous response
   }
 
   sendResponse({ success: false, message: "Unknown action" });
@@ -116,6 +104,15 @@ function pasteTranscription(text) {
   } else {
     console.log("No suitable element for inserting transcription");
   }
+}
+
+function playSound(soundType, volume) {
+  const sound = soundType === "start" ? startSound : stopSound;
+  sound.volume = volume;
+  sound
+    .play()
+    .then(() => console.log(`${soundType} sound played successfully`))
+    .catch((error) => console.error(`Error playing ${soundType} sound:`, error));
 }
 
 console.log("Content script setup complete");
