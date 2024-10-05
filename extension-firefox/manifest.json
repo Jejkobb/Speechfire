@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Speechfire",
-  "version": "1.4",
+  "version": "1.5",
   "description": "Transcribe your speech and paste the result into the focused text field.",
   "permissions": ["activeTab", "storage", "webRequest", "webRequestBlocking", "*://*/*"],
   "background": {
