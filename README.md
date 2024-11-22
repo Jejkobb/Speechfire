@@ -1,6 +1,6 @@
 # Speechfire <img src="extension-firefox/icon/icon-128.png" alt="🔥" width="32" height="32">
 
-**Offline multilingual speech-to-text Firefox extension**
+<img src="banner.png" alt="Speechfire Banner" width="100%">
 
 ## Overview
 
