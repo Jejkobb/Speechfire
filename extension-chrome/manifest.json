@@ -1,46 +1,46 @@
 {
-  "manifest_version": 3,
-  "name": "Speechfire",
-  "version": "1.4",
-  "description": "Transcribe your speech and paste the result into the focused text field.",
-  "permissions": ["activeTab", "storage", "scripting"],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "icons": {
-    "128": "icon/icon-128.png"
-  },
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon/icon-16.png",
-      "48": "icon/icon-48.png",
-      "128": "icon/icon-128.png"
-    }
-  },
-  "commands": {
-    "start_stop_transcription": {
-      "suggested_key": {
-        "default": "Alt+A",
-        "mac": "Ctrl+A"
-      },
-      "description": "Start/Stop transcription"
-    }
-  },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self';"
-  },
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "sounds/start.mp3",
-        "sounds/stop.mp3",
-        "font/Geist-Medium.otf",
-        "font/Geist-Regular.otf",
-        "font/Geist-SemiBold.otf",
-        "icon/icon-red.png"
-      ],
-      "matches": ["<all_urls>"]
-    }
-  ]
+	"manifest_version": 3,
+	"name": "Speechfire",
+	"version": "0.0.1",
+	"description": "Provides offline speech-to-text functionality into any focused text field.",
+	"permissions": ["activeTab", "storage", "scripting"],
+	"background": {
+		"service_worker": "background.js"
+	},
+	"icons": {
+		"128": "icon/icon-128.png"
+	},
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "icon/icon-16.png",
+			"48": "icon/icon-48.png",
+			"128": "icon/icon-128.png"
+		}
+	},
+	"commands": {
+		"start_stop_transcription": {
+			"suggested_key": {
+				"default": "Alt+A",
+				"mac": "Ctrl+A"
+			},
+			"description": "Start/Stop transcription"
+		}
+	},
+	"content_security_policy": {
+		"extension_pages": "script-src 'self'; object-src 'self';"
+	},
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"sounds/start.mp3",
+				"sounds/stop.mp3",
+				"font/Geist-Medium.otf",
+				"font/Geist-Regular.otf",
+				"font/Geist-SemiBold.otf",
+				"icon/icon-red.png"
+			],
+			"matches": ["<all_urls>"]
+		}
+	]
 }
