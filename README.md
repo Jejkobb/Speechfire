@@ -77,3 +77,4 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
   sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
   pip install PyGObject
   ```
+- You can also create a file to launch the system tray application at startup
