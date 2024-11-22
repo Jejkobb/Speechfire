@@ -23,8 +23,11 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
    pip install -r requirements.txt
    ```
 
-2. **Install Firefox Extension**
-   - Open `extension-firefox.xpi` in Firefox
+2. **Install Extension**
+   - Add the extension via the official Firefox Add-ons site or Chrome Web Store
+   - Or install from source:
+     - Manually install `extension-firefox.xpi` in Firefox
+     - Manually install `extension-chrome.zip` in Chrome
 
 ## Usage
 
