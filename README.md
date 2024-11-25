@@ -20,7 +20,9 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
    ```bash
    python -m venv speechfire
    source speechfire/bin/activate  # On Windows: speechfire\Scripts\activate
-   pip install -r requirements.txt
+   pip install -r requirements-lock.txt # confirmed working
+   # or
+   pip install -r requirements.txt # latest versions, may break
    ```
 
 2. **Install Extension**
