@@ -14,7 +14,7 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
 - ⌨️ Hotkey (`Alt+A`) to start/stop recording
 
 ## Prerequisites
-### Running a Linux or Windows
+### Running Linux or Windows
 MacOS has some convoluted requirements to get Whisper running, so it isn't supported. Just use the system dictation tool - it works for everything.
 
 ### FFmpeg
