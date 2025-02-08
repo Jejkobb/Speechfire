@@ -80,7 +80,7 @@ choco install ffmpeg
 
 ## Icon Guide
 
-- Firefox Extension:
+- Extension icon:
   - <img src="extension-firefox/icon/icon-red.png" alt="Red Icon" width="16" height="16"> Recording
   - <img src="extension-firefox/icon/icon.png" alt="White Icon" width="16" height="16"> Not recording
 - System Tray:
