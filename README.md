@@ -87,6 +87,15 @@ choco install ffmpeg
   - <img src="extension-firefox/icon/icon-green.png" alt="Green Icon" width="16" height="16"> Server running
   - <img src="extension-firefox/icon/icon.png" alt="White Icon" width="16" height="16"> Server not running
 
+## Troubleshooting
+
+### Changing the Extension Hotkey
+If you need to change the default `Alt+A` hotkey:
+- Go to Firefox Settings → Extensions & Themes → Manage Extensions
+- Click the gear icon ⚙️ next to Speechfire
+- Select "Manage Extension Shortcuts"
+- Set your preferred key combination
+
 ## Additional Notes
 
 - For Linux system tray support:
