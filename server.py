@@ -65,4 +65,6 @@ def transcribe():
 
 if __name__ == "__main__":
     logging.info(f"Starting server with device: {device}")
-    app.run(debug=True, threaded=True)
+    # Bind to 0.0.0.0 if running in Docker, otherwise localhost
+    host = '0.0.0.0' if os.environ.get('DOCKER_ENV') else '127.0.0.1'
+    app.run(host=host, port=5000, debug=True, threaded=True)
