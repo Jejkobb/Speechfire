@@ -2,6 +2,7 @@
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
+let mediaStream = null;
 
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message) => {
@@ -11,6 +12,7 @@ chrome.runtime.onMessage.addListener((message) => {
             console.log("Stopping recording...");
             mediaRecorder.stop();
             isRecording = false;
+            releaseMediaStream();
         } else {
             console.log("Starting recording...");
             startRecording();
@@ -19,55 +21,145 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 function startRecording() {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.start();
-            console.log("MediaRecorder started");
+    chrome.runtime.sendMessage({ action: "getServerUrl" }, (serverResponse) => {
+        const serverUrl = serverResponse.serverUrl || 'http://127.0.0.1:5000';
 
-            mediaRecorder.ondataavailable = (event) => {
-                audioChunks.push(event.data);
-            };
+        // Test server connection first
+        testServerConnection(serverUrl)
+            .then(serverAvailable => {
+                if (!serverAvailable) {
+                    showErrorNotification(`Cannot connect to Speechfire server. Please ensure it's running on ${serverUrl}`);
+                    // Tell background script recording failed
+                    chrome.runtime.sendMessage({ action: "recordingFailed" });
+                    return;
+                }
 
-            mediaRecorder.onstop = () => {
-                console.log("MediaRecorder stopped");
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                audioChunks = [];
-                sendAudioForTranscription(audioBlob);
-            };
+                // Server is available, proceed with recording
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => {
+                        mediaStream = stream; // Store stream reference for cleanup
+                        mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+                        console.log("MediaRecorder started");
 
-            isRecording = true;
-        })
-        .catch(error => {
-            console.error('Error accessing audio:', error);
+                        // Tell background script recording actually started
+                        chrome.runtime.sendMessage({ action: "recordingStarted" });
+
+                        mediaRecorder.ondataavailable = (event) => {
+                            audioChunks.push(event.data);
+                        };
+
+                        mediaRecorder.onstop = () => {
+                            console.log("MediaRecorder stopped");
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                            audioChunks = [];
+                            sendAudioForTranscription(audioBlob);
+
+                            // Tell background script recording stopped
+                            chrome.runtime.sendMessage({ action: "recordingStopped" });
+                            releaseMediaStream();
+                        };
+
+                        isRecording = true;
+                    })
+                    .catch(error => {
+                        console.error('Error accessing audio:', error);
+                        showErrorNotification("Cannot access microphone. Please check permissions.");
+                        // Tell background script recording failed
+                        chrome.runtime.sendMessage({ action: "recordingFailed" });
+                    });
+            });
+    });
+}
+
+function releaseMediaStream() {
+    if (mediaStream) {
+        mediaStream.getTracks().forEach(track => {
+            track.stop();
+            console.log("Released microphone track");
         });
+        mediaStream = null;
+    }
 }
 
 function sendAudioForTranscription(audioBlob) {
     // Request the selected language and server URL from background.js
     chrome.runtime.sendMessage({ action: "getLanguage" }, (languageResponse) => {
         const selectedLanguage = languageResponse.language || 'English'; // Default to English if no language is received
-        
+
         chrome.runtime.sendMessage({ action: "getServerUrl" }, (serverResponse) => {
             const serverUrl = serverResponse.serverUrl || 'http://127.0.0.1:5000'; // Default server URL
-            
+
             const formData = new FormData();
             formData.append('audio_data', audioBlob, 'audio.wav');
 
             // Send the language as a query string parameter
-            fetch(`${serverUrl}/transcribe?lang=${encodeURIComponent(selectedLanguage)}`, {
+            fetchWithTimeout(`${serverUrl}/transcribe?lang=${encodeURIComponent(selectedLanguage)}`, {
                 method: 'POST',
                 body: formData
+            }, 30000) // 30 second timeout for transcription
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
             })
-            .then(response => response.json())
             .then(data => {
+                if (data.error) {
+                    showErrorNotification(`Transcription failed: ${data.error}`);
+                    return;
+                }
                 console.log("Transcription received:", data.transcription); // Log transcription for debugging
                 if (data.transcription) {
                     pasteTranscription(data.transcription);
+                } else {
+                    showErrorNotification("No transcription received from server");
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Transcription error:', error);
+
+                // Determine error type and show appropriate message
+                if (error.name === 'AbortError' || error.name === 'TimeoutError') {
+                    showErrorNotification("Request timed out. Please check if the Speechfire server is running.");
+                } else if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    showErrorNotification(`Cannot connect to Speechfire server. Please ensure it's running on ${serverUrl}`);
+                } else if (error.message.includes('Server error')) {
+                    showErrorNotification(error.message);
+                } else {
+                    showErrorNotification(`Transcription failed: ${error.message}`);
+                }
+            });
         });
+    });
+}
+
+function fetchWithTimeout(url, options = {}, timeoutMs = 10000) {
+    if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+        return fetch(url, {
+            ...options,
+            signal: AbortSignal.timeout(timeoutMs)
+        });
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, {
+        ...options,
+        signal: controller.signal
+    }).finally(() => clearTimeout(timeoutId));
+}
+
+function testServerConnection(serverUrl) {
+    return fetchWithTimeout(`${serverUrl}/`, {
+        method: 'GET'
+    }, 500)
+    .then(response => {
+        return response.ok;
+    })
+    .catch(error => {
+        console.log('Server connection test failed:', error);
+        return false;
     });
 }
 
@@ -115,4 +207,73 @@ function simulatePaste(text) {
 
 function pasteTranscription(text) {
     simulatePaste(text);
+}
+
+function showErrorNotification(message) {
+    // Remove any existing error notifications
+    const existingNotification = document.getElementById('speechfire-error-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+
+    // Create error notification element
+    const notification = document.createElement('div');
+    notification.id = 'speechfire-error-notification';
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff4444;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        max-width: 350px;
+        line-height: 1.4;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+    `;
+
+    notification.innerHTML = `
+        <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <div style="flex-shrink: 0; font-size: 16px;">🔥</div>
+            <div style="flex: 1;">
+                <div style="font-weight: 600; margin-bottom: 4px;">Speechfire Error</div>
+                <div style="margin-bottom: 8px;">${message}</div>
+                <a href="https://github.com/Jejkobb/Speechfire?tab=readme-ov-file#overview" 
+                   target="_blank" 
+                   style="color: #ffffff; text-decoration: underline; font-size: 12px; opacity: 0.9;">
+                   📖 View Setup Instructions
+                </a>
+            </div>
+            <div style="flex-shrink: 0; font-size: 18px; opacity: 0.7;">×</div>
+        </div>
+    `;
+
+    // Add click to dismiss (but not for links)
+    notification.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'A') {
+            notification.style.opacity = '0';
+            setTimeout(() => notification.remove(), 300);
+        }
+    });
+
+    // Add to page
+    document.body.appendChild(notification);
+
+    // Auto-remove after 8 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 300);
+        }
+    }, 8000);
 }

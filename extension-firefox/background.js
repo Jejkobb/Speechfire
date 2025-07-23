@@ -24,20 +24,11 @@ const stopSound = new Audio(browser.runtime.getURL("sounds/stop.mp3"));
 
 function toggleRecording() {
   if (!isRecording) {
-    // Set the volume of the start sound and play it
-    startSound.volume = volumeLevel;
-    startSound.play();
-
-    // Change icon
-    browser.browserAction.setIcon({ path: "./icon/icon-red.png" });
+    // Don't change icon here - wait for content script confirmation
+    // Just send the command to content script
     isRecording = true;
   } else {
-    // Play the stop recording sound
-    stopSound.volume = volumeLevel;
-    stopSound.play();
-
-    // Stop recording
-    browser.browserAction.setIcon({ path: "./icon/icon-128.png" });
+    // The content script will handle stopping and notify us
     isRecording = false;
   }
 }
@@ -89,5 +80,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.action === "updateServerUrl") {
     serverUrl = message.serverUrl;
     console.log(`Server URL updated: ${serverUrl}`);
+  } else if (message.action === "recordingStarted") {
+    // Recording actually started - change icon and play sound
+    startSound.volume = volumeLevel;
+    startSound.play();
+    browser.browserAction.setIcon({ path: "./icon/icon-red.png" });
+    console.log("Recording started - icon changed to red");
+  } else if (message.action === "recordingStopped") {
+    // Recording stopped - change icon back and play sound
+    stopSound.volume = volumeLevel;
+    stopSound.play();
+    browser.browserAction.setIcon({ path: "./icon/icon-128.png" });
+    isRecording = false;
+    console.log("Recording stopped - icon changed to normal");
+  } else if (message.action === "recordingFailed") {
+    // Recording failed - reset state without changing icon
+    isRecording = false;
+    console.log("Recording failed - state reset");
   }
 });
