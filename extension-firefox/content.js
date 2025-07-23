@@ -2,6 +2,7 @@
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
+let mediaStream = null;
 
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message) => {
@@ -11,6 +12,15 @@ chrome.runtime.onMessage.addListener((message) => {
             console.log("Stopping recording...");
             mediaRecorder.stop();
             isRecording = false;
+            
+            // Release microphone by stopping all tracks
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => {
+                    track.stop();
+                    console.log("Released microphone track");
+                });
+                mediaStream = null;
+            }
         } else {
             console.log("Starting recording...");
             startRecording();
@@ -21,6 +31,7 @@ chrome.runtime.onMessage.addListener((message) => {
 function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
+            mediaStream = stream; // Store stream reference for cleanup
             mediaRecorder = new MediaRecorder(stream);
             mediaRecorder.start();
             console.log("MediaRecorder started");
@@ -34,6 +45,15 @@ function startRecording() {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 audioChunks = [];
                 sendAudioForTranscription(audioBlob);
+                
+                // Release microphone after processing
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => {
+                        track.stop();
+                        console.log("Released microphone track after recording");
+                    });
+                    mediaStream = null;
+                }
             };
 
             isRecording = true;
