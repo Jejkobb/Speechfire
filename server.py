@@ -22,7 +22,7 @@ model = whisper.load_model("base", device=device)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return {"status": "Speechfire server is running", "version": "1.0"}
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
