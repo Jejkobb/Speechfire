@@ -19,7 +19,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Pre-download Whisper model to avoid download on first run
-RUN python -c "import whisper; whisper.load_model('base')"
+ARG WHISPER_MODEL=base
+RUN python -c "import whisper; import os; model_name=os.environ.get('WHISPER_MODEL', '${WHISPER_MODEL}'); whisper.load_model(model_name)"
 
 # Expose the Flask port
 EXPOSE 5000

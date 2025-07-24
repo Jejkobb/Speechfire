@@ -18,7 +18,9 @@ logging.basicConfig(level=logging.DEBUG,
 
 # Load Whisper model (on GPU if available)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = whisper.load_model("base", device=device)
+model_name = os.environ.get('WHISPER_MODEL', 'base')
+logging.info(f"Loading Whisper model: {model_name}")
+model = whisper.load_model(model_name, device=device)
 
 @app.route('/')
 def home():
