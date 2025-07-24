@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - WHISPER_MODEL=${WHISPER_MODEL:-base}
     ports:
       - "${SERVER_HOST:-127.0.0.1}:${SERVER_PORT:-5000}:5000"
     volumes:
@@ -13,6 +15,7 @@ services:
       - DOCKER_ENV=1
       - SERVER_HOST=${SERVER_HOST:-0.0.0.0}
       - SERVER_PORT=5000
+      - WHISPER_MODEL=${WHISPER_MODEL:-base}
     restart: unless-stopped
     deploy:
       resources:
