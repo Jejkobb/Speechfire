@@ -1,0 +1,22 @@
+# Copy this file to docker-compose.override.yml and customize as needed
+version: '3.8'
+
+services:
+  speechfire:
+    # Example: Bind to localhost only (more secure for local development)
+    ports:
+      - "127.0.0.1:5000:5000"
+    
+    # Example: Use custom port
+    # ports:
+    #   - "127.0.0.1:8080:5000"
+    # environment:
+    #   - SERVER_PORT=5000  # Internal port stays 5000
+    
+    # Example: Remove GPU support for CPU-only systems
+    # deploy:
+    #   resources: {}
+    
+    # Example: Add environment file
+    # env_file:
+    #   - .env

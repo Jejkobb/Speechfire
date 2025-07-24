@@ -45,6 +45,7 @@ function toggleRecording() {
 // Variable to store volume level (0 to 1)
 let volumeLevel = 1.0;
 let selectedLanguage = "English"; // Default language
+let serverUrl = "http://127.0.0.1:5000"; // Default server URL
 
 // Load settings from chrome storage when the background script starts
 chrome.storage.local.get("volume", (data) => {
@@ -65,14 +66,28 @@ chrome.storage.local.get("language", (data) => {
   }
 });
 
+chrome.storage.local.get("serverUrl", (data) => {
+  if (data.serverUrl !== undefined) {
+    serverUrl = data.serverUrl;
+    console.log("Server URL restored:", data.serverUrl);
+  } else {
+    console.log("No server URL stored, using default.");
+  }
+});
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "getLanguage") {
     sendResponse({ language: selectedLanguage });
+  } else if (message.action === "getServerUrl") {
+    sendResponse({ serverUrl: serverUrl });
   } else if (message.action === "updateVolume") {
     volumeLevel = message.volume;
     console.log(`Volume updated: ${volumeLevel}`);
   } else if (message.action === "updateLanguage") {
     selectedLanguage = message.language;
     console.log(`Language updated: ${selectedLanguage}`);
+  } else if (message.action === "updateServerUrl") {
+    serverUrl = message.serverUrl;
+    console.log(`Server URL updated: ${serverUrl}`);
   }
 });

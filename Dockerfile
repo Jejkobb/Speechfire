@@ -18,8 +18,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Pre-download Whisper model to avoid download on first run
+RUN python -c "import whisper; whisper.load_model('base')"
+
 # Expose the Flask port
 EXPOSE 5000
+
+# Set environment variable to indicate Docker environment
+ENV DOCKER_ENV=1
 
 # Command to run the application
 CMD ["python", "server.py"]

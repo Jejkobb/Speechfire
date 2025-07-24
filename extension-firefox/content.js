@@ -44,26 +44,30 @@ function startRecording() {
 }
 
 function sendAudioForTranscription(audioBlob) {
-    // Request the selected language from background.js
-    chrome.runtime.sendMessage({ action: "getLanguage" }, (response) => {
-        const selectedLanguage = response.language || 'English'; // Default to English if no language is received
+    // Request the selected language and server URL from background.js
+    chrome.runtime.sendMessage({ action: "getLanguage" }, (languageResponse) => {
+        const selectedLanguage = languageResponse.language || 'English'; // Default to English if no language is received
+        
+        chrome.runtime.sendMessage({ action: "getServerUrl" }, (serverResponse) => {
+            const serverUrl = serverResponse.serverUrl || 'http://127.0.0.1:5000'; // Default server URL
+            
+            const formData = new FormData();
+            formData.append('audio_data', audioBlob, 'audio.wav');
 
-        const formData = new FormData();
-        formData.append('audio_data', audioBlob, 'audio.wav');
-
-        // Send the language as a query string parameter
-        fetch(`http://127.0.0.1:5000/transcribe?lang=${encodeURIComponent(selectedLanguage)}`, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Transcription received:", data.transcription); // Log transcription for debugging
-            if (data.transcription) {
-                pasteTranscription(data.transcription);
-            }
-        })
-        .catch(error => console.error('Error:', error));
+            // Send the language as a query string parameter
+            fetch(`${serverUrl}/transcribe?lang=${encodeURIComponent(selectedLanguage)}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Transcription received:", data.transcription); // Log transcription for debugging
+                if (data.transcription) {
+                    pasteTranscription(data.transcription);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
     });
 }
 
