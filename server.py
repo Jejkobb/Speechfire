@@ -64,7 +64,10 @@ def transcribe():
     return jsonify({"transcription": transcription})
 
 if __name__ == "__main__":
+    # Configure host and port based on environment
+    host = os.environ.get('SERVER_HOST', '0.0.0.0' if os.environ.get('DOCKER_ENV') else '127.0.0.1')
+    port = int(os.environ.get('SERVER_PORT', 5000))
+    
     logging.info(f"Starting server with device: {device}")
-    # Bind to 0.0.0.0 if running in Docker, otherwise localhost
-    host = '0.0.0.0' if os.environ.get('DOCKER_ENV') else '127.0.0.1'
-    app.run(host=host, port=5000, debug=True, threaded=True)
+    logging.info(f"Server will run on {host}:{port}")
+    app.run(host=host, port=port, debug=True, threaded=True)
