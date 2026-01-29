@@ -78,5 +78,8 @@ Thumbs.db
 # Environment variables
 .env
 
+# Docker compose override
+docker-compose.override.yml
+
 # Illustrator files
 *.ai

@@ -18,11 +18,13 @@ logging.basicConfig(level=logging.DEBUG,
 
 # Load Whisper model (on GPU if available)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model = whisper.load_model("base", device=device)
+model_name = os.environ.get('WHISPER_MODEL', 'base')
+logging.info(f"Loading Whisper model: {model_name}")
+model = whisper.load_model(model_name, device=device)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return {"status": "Speechfire server is running", "version": "1.0"}
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
@@ -64,5 +66,10 @@ def transcribe():
     return jsonify({"transcription": transcription})
 
 if __name__ == "__main__":
+    # Configure host and port based on environment
+    host = os.environ.get('SERVER_HOST', '0.0.0.0' if os.environ.get('DOCKER_ENV') else '127.0.0.1')
+    port = int(os.environ.get('SERVER_PORT', 5000))
+    
     logging.info(f"Starting server with device: {device}")
-    app.run(debug=True, threaded=True)
+    logging.info(f"Server will run on {host}:{port}")
+    app.run(host=host, port=port, debug=True, threaded=True)

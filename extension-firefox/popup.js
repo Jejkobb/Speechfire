@@ -3,6 +3,7 @@ class SpeechfireSettings {
     this.volumeSlider = document.getElementById("volumeSlider");
     this.volumePercentage = document.getElementById("volumePercentage");
     this.languageDropdown = document.getElementById("languageDropdown");
+    this.serverUrlInput = document.getElementById("serverUrl");
 
     this.initEventListeners();
     this.restoreSettings();
@@ -11,6 +12,7 @@ class SpeechfireSettings {
   initEventListeners() {
     this.volumeSlider.addEventListener("input", () => this.handleVolumeChange());
     this.languageDropdown.addEventListener("change", () => this.handleLanguageChange());
+    this.serverUrlInput.addEventListener("input", () => this.handleServerUrlChange());
     document.addEventListener("DOMContentLoaded", () => this.updateVolumePercentage());
     document.addEventListener("DOMContentLoaded", () => this.updateSliderBackground()); // Update on page load
   }
@@ -29,6 +31,11 @@ class SpeechfireSettings {
     this.sendMessageToBackground({ action: "updateLanguage", language: selectedLanguage });
   }
 
+  handleServerUrlChange() {
+    this.saveSettings();
+    this.sendMessageToBackground({ action: "updateServerUrl", serverUrl: this.serverUrlInput.value });
+  }
+
   updateVolumePercentage() {
     this.volumePercentage.textContent = `${this.volumeSlider.value}%`;
   }
@@ -43,6 +50,7 @@ class SpeechfireSettings {
     const settings = {
       volume: this.volumeSlider.value / 100,
       language: this.languageDropdown.value,
+      serverUrl: this.serverUrlInput.value || "http://127.0.0.1:5000",
     };
 
     chrome.storage.local.set(settings, () => {
@@ -51,13 +59,19 @@ class SpeechfireSettings {
   }
 
   restoreSettings() {
-    chrome.storage.local.get(["volume", "language"], (data) => {
+    chrome.storage.local.get(["volume", "language", "serverUrl"], (data) => {
       if (data.volume !== undefined) {
         this.volumeSlider.value = data.volume * 100;
       }
 
       if (data.language !== undefined) {
         this.languageDropdown.value = data.language;
+      }
+
+      if (data.serverUrl !== undefined) {
+        this.serverUrlInput.value = data.serverUrl;
+      } else {
+        this.serverUrlInput.value = "http://127.0.0.1:5000";
       }
 
       this.updateVolumePercentage();
