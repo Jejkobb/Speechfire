@@ -46,6 +46,18 @@ choco install ffmpeg
      - Manually install `extension-firefox.xpi` in Firefox
      - Manually install `extension-chrome.zip` in Chrome
 
+## Docker (Optional)
+
+If you prefer Docker, you can run the server without installing Python locally:
+
+```bash
+docker compose up --build
+```
+
+Notes:
+- The image pre-downloads the Whisper model, so build time and size scale with the chosen model.
+- The container binds to `0.0.0.0` by default. If you want localhost-only access, set `SERVER_HOST=127.0.0.1` or use `docker-compose.override.yml`.
+
 ## Usage
 
 1. **Start the server**
@@ -73,6 +85,7 @@ choco install ffmpeg
    - Focus on a text field in Firefox
    - Press `Alt+A` to start/stop recording
    - Transcription will appear in the focused field
+   - If your server is on a different host/port, set **Server URL** in the extension popup
 
 3. **Stop the server**
    - Press `Ctrl+C` in the terminal
