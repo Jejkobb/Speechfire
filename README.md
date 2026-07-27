@@ -17,6 +17,9 @@ Speechfire is a Firefox extension that provides offline speech-to-text functiona
 ### Running Linux or Windows
 MacOS has some convoluted requirements to get Whisper running, so it isn't supported. Just use the system dictation tool - it works for everything.
 
+### Python
+Python 3.11 is recommended for compatibility with the locked dependencies.
+
 ### FFmpeg
 Whisper requires [FFmpeg](https://ffmpeg.org/download.html), so you need to have it installed. It's used for a lot of things, you won't regret installing it! You can install it using package managers:
 
@@ -30,7 +33,14 @@ choco install ffmpeg
 
 ## Installation
 
-1. **Set up Python environment**
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/Jejkobb/Speechfire.git
+   cd Speechfire
+   ```
+
+2. **Set up Python environment**
 
    ```bash
    python -m venv speechfire
@@ -40,7 +50,7 @@ choco install ffmpeg
    pip install -r requirements.txt # latest versions, may break
    ```
 
-2. **Install Extension**
+3. **Install Extension**
 - Add the extension via the official [Firefox Add-ons site](https://addons.mozilla.org/en-US/firefox/addon/speechfire/) or [Chrome Web Store](https://chromewebstore.google.com/detail/speechfire/ehcikcfkjplgancoaapobfmfjhbdomdm?hl=en)
    - Or install from source:
      - Manually install `extension-firefox.xpi` in Firefox
@@ -61,6 +71,8 @@ Notes:
 ## Usage
 
 1. **Start the server**
+
+   Run this command from the cloned `Speechfire` directory, where `server.py` is located:
 
    ```bash
    python server.py
